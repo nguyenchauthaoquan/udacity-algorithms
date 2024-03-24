@@ -14,7 +14,9 @@ def rotate_list(list: []) -> []:
 
 
 def rotated_array_search(input_list, number):
-    return search(list=rotate_list(input_list), value=number, type="meta binary")
+    rotated_list = rotate_list(input_list)
+
+    return search(list=rotated_list, value=number, type="meta binary")
 
 
 def search(list: [], value: int, type: str = "linear") -> int:
@@ -26,7 +28,6 @@ def search(list: [], value: int, type: str = "linear") -> int:
         return binary_search(list, value)
     elif type == "meta binary":
         return meta_binary_search(list, value)
-
     else:
         raise ValueError()
 
@@ -87,17 +88,3 @@ def meta_binary_search(list: [], value: int) -> int:
             index = new_index
 
     return index if list[index] == value else -1
-
-
-input_list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-print("Input list:", input_list)
-output_list = rotate_list(input_list)
-print("Randomly rotated list:", output_list)
-print("Linear search result: ", search(input_list, 6))
-print("Sentinel linear search result: ", search(input_list, 8, type="sentinel linear"))
-print("Binary search result: ", search(input_list, 7, type="binary"))
-print("Meta binary search result: ", search(input_list, 1, type="meta binary"))
-
-input_list = [0, 1, 2, 4, 5, 6, 7]
-print("Input list:", input_list)
-print("Rotated array search result: ", rotated_array_search(input_list, 1))
