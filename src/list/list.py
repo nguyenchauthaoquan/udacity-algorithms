@@ -144,8 +144,9 @@ def merge_sort(list: [], comparator=lambda x, y: x < y) -> []:
 
 
 def tim_sort(list: [], comparator=lambda x, y: x < y):
+    sorted_list = []
     for i in range(0, len(list), TIM_SORT_MIN_SIZE):
-        insertion_sort(list[i: min((i + TIM_SORT_MIN_SIZE), len(list))], comparator)
+        sorted_list = insertion_sort(list[i: min((i + TIM_SORT_MIN_SIZE), len(list))], comparator)
 
     size = TIM_SORT_MIN_SIZE
 
@@ -154,8 +155,8 @@ def tim_sort(list: [], comparator=lambda x, y: x < y):
             middle_index = left_index + size
             right_index = min((left_index + 2 * size), len(list))
             if middle_index < right_index:
-                merge_sort(list[left_index: right_index], comparator)
+                sorted_list = merge_sort(list[left_index: right_index], comparator)
 
         size *= 2
 
-    return list
+    return sorted_list
