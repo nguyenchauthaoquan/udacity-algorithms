@@ -10,15 +10,38 @@ def rotate_list(list: []) -> []:
 
     pivot_index = randint(0, len(list) - 1)
 
-    output = list[pivot_index:] + list[:pivot_index]
+    list[:] = list[pivot_index:] + list[:pivot_index]
 
-    return output
+    return list
 
 
 def rotated_array_search(input_list, number):
     rotated_list = rotate_list(input_list)
 
-    return search(list=rotated_list, value=number, type="meta binary")
+    print(rotated_list)
+
+    return search(list=rotated_list, value=number, type="binary")
+
+
+def rearrange_digits(input_list):
+    """
+    Rearrange Array Elements so as to form two number such that their sum is maximum.
+    Args:
+        input_list(list): Input List
+    Returns:
+        (int),(int): Two maximum sums
+    """
+    max_sum_number1 = 0
+    max_sum_number2 = 0
+    sorted_input_list = tim_sort(input_list, comparator=lambda x, y: x > y)
+
+    for i in range(0, len(sorted_input_list), 2):
+        max_sum_number1 = max_sum_number1 * 10 + sorted_input_list[i]
+
+    for j in range(1, len(sorted_input_list), 2):
+        max_sum_number2 = max_sum_number2 * 10 + sorted_input_list[j]
+
+    return max_sum_number1, max_sum_number2
 
 
 def search(list: [], value: int, type: str = "linear") -> int:
@@ -62,18 +85,16 @@ def binary_search(list: [], value: int) -> int:
     left_index = 0
     right_index = len(list) - 1
 
-    if right_index <= 0:
-        return -1
-    else:
-        while left_index <= right_index:
-            mid_index = left_index + (right_index - left_index) // 2
+    while left_index <= right_index:
+        mid_index = left_index + (right_index - left_index) // 2
 
-            if list[mid_index] == value:
-                return mid_index
-            elif list[mid_index] < value:
-                left_index = mid_index + 1
-            else:
-                right_index = mid_index - 1
+        if list[mid_index] == value:
+            return mid_index
+        elif list[mid_index] < value:
+            left_index = mid_index + 1
+        else:
+            right_index = mid_index - 1
+    return -1
 
 
 def meta_binary_search(list: [], value: int) -> int:
