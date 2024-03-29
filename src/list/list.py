@@ -44,6 +44,28 @@ def rearrange_digits(input_list):
     return max_sum_number1, max_sum_number2
 
 
+def sort_012(input_list):
+    """
+    Given an input array consisting on only 0, 1, and 2, sort the array in a single traversal.
+
+    Args:
+       input_list(list): List to be sorted
+    """
+    pass
+
+
+def find_min_max(input_list):
+    min_element, max_element = 0, 0
+
+    for i in input_list:
+        if min_element > i:
+            min_element = i
+        if max_element < i:
+            max_element = i
+
+    return min_element, max_element
+
+
 def search(list: [], value: int, type: str = "linear") -> int:
     if type == "linear":
         return linear_search(list, value)
@@ -179,5 +201,32 @@ def tim_sort(list: [], comparator=lambda x, y: x < y):
                 sorted_list = merge_sort(list[left_index: right_index], comparator)
 
         size *= 2
+
+    return sorted_list
+
+
+def count_sort(list: [], is_descending_order = False):
+    min_element, max_element = find_min_max(list)
+    count_list = [0] * (max_element - min_element + 1)
+
+    for item in list:
+        count_list[item - min_element] += 1
+
+    if is_descending_order:
+        for i in range(len(list) - 2, -1, -1):
+            count_list[i] += count_list[i + 1]
+    else:
+        for i in range(1,len(list)):
+            count_list[i] += count_list[i - 1]
+    sorted_list = [0] * len(list)
+
+    if is_descending_order:
+        for i in reversed(list):
+            sorted_list[count_list[i - min_element] - 1] = i
+            count_list[i - min_element] -= 1
+    else:
+        for i in list:
+            sorted_list[count_list[i - min_element] - 1] = i
+            count_list[i - min_element] -= 1
 
     return sorted_list
