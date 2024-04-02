@@ -7,4 +7,4 @@ if __name__ == '__main__':
     print("Problem 2: ", rotated_array_search(input_list, 1000))
     print("Problem 3: ", rearrange_digits([4, 6, 2, 5, 9, 8]))
     print("Counting sort in ascending order: ", count_sort(input_list))
-    #print("Counting sort in ascending order: ", count_sort(input_list, is_descending_order=True))
+    # print("Counting sort in ascending order: ", count_sort(input_list, is_descending_order=True))
