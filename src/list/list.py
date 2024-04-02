@@ -108,20 +108,30 @@ def binary_search(list: [], value: int) -> int:
     right_index = len(list) - 1
 
     while left_index <= right_index:
-        mid_index = left_index + (right_index - left_index) // 2
+        middle_index = (left_index + right_index) // 2
+        if list[middle_index] == value:
+            return middle_index
 
-        if list[mid_index] == value:
-            return mid_index
-        elif list[mid_index] < value:
-            left_index = mid_index + 1
+        # If arr[left:mid] is sorted
+        if list[left_index] <= list[middle_index]:
+            # If the target is within the sorted range
+            if list[left_index] <= value < list[middle_index]:
+                right_index = middle_index - 1
+            else:
+                left_index = middle_index + 1
+        # If arr[mid:right] is sorted
         else:
-            right_index = mid_index - 1
+            # If the target is within the sorted range
+            if list[middle_index] < value <= list[right_index]:
+                left_index = middle_index + 1
+            else:
+                right_index = middle_index - 1
     return -1
 
 
 def meta_binary_search(list: [], value: int) -> int:
     n = len(list)
-    interval_size = int(math.log2(n - 1)) + 1
+    interval_size = int(math.log(n - 1, 2.0)) + 1
     index = 0
 
     for i in range(interval_size - 1, -1, -1):
@@ -129,9 +139,8 @@ def meta_binary_search(list: [], value: int) -> int:
             return index
         new_index = index | (1 << i)
 
-        if (new_index < n) and (list[new_index] <= value):
+        if new_index < n and list[new_index] <= value:
             index = new_index
-
     return index if list[index] == value else -1
 
 
@@ -205,28 +214,20 @@ def tim_sort(list: [], comparator=lambda x, y: x < y):
     return sorted_list
 
 
-def count_sort(list: [], is_descending_order = False):
-    min_element, max_element = find_min_max(list)
-    count_list = [0] * (max_element - min_element + 1)
+def count_sort(list: []):
+    _, max_element = find_min_max(list)
+    count_list = [0] * (max_element + 1)
 
     for item in list:
-        count_list[item - min_element] += 1
+        count_list[item] += 1
 
-    if is_descending_order:
-        for i in range(len(list) - 2, -1, -1):
-            count_list[i] += count_list[i + 1]
-    else:
-        for i in range(1,len(list)):
-            count_list[i] += count_list[i - 1]
+    for i in range(1, max_element + 1):
+        count_list[i] += count_list[i - 1]
+
     sorted_list = [0] * len(list)
 
-    if is_descending_order:
-        for i in reversed(list):
-            sorted_list[count_list[i - min_element] - 1] = i
-            count_list[i - min_element] -= 1
-    else:
-        for i in list:
-            sorted_list[count_list[i - min_element] - 1] = i
-            count_list[i - min_element] -= 1
+    for i in range(len(list) - 1, -1, -1):
+        sorted_list[count_list[list[i]] - 1] = list[i]
+        count_list[list[i]] -= 1
 
     return sorted_list
