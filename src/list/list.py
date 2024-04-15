@@ -20,7 +20,7 @@ def rotated_array_search(input_list, number):
 
     print(rotated_list)
 
-    return search(list=rotated_list, value=number, type="binary")
+    return binary_search(list=rotated_list, value=number)
 
 
 def rearrange_digits(input_list):
@@ -51,7 +51,14 @@ def sort_012(input_list):
     Args:
        input_list(list): List to be sorted
     """
-    pass
+    interested_values = [0, 1, 2]
+
+    # If any value different from 0, 1, 2, return the empty list
+    for value in input_list:
+        if value not in interested_values:
+            return []
+
+    return count_sort(input_list)
 
 
 def find_min_max(input_list):
@@ -66,41 +73,11 @@ def find_min_max(input_list):
     return min_element, max_element
 
 
-def search(list: [], value: int, type: str = "linear") -> int:
-    if type == "linear":
-        return linear_search(list, value)
-    elif type == "sentinel linear":
-        return sentinel_linear_search(list, value)
-    elif type == "binary":
-        return binary_search(list, value)
-    elif type == "meta binary":
-        return meta_binary_search(list, value)
-    else:
-        raise ValueError()
-
-
 def linear_search(list: [], value: int) -> int:
     for i in range(len(list)):
         if list[i] == value:
             return i
     return -1
-
-
-def sentinel_linear_search(list, value):
-    last_item = list[len(list) - 1]
-    list[len(list) - 1] = value
-
-    i = 0
-
-    while list[i] != value:
-        i += 1
-
-    list[i] = last_item
-
-    if (i < len(list) - 1) or (list[len(list) - 1] == value):
-        return i
-    else:
-        return -1
 
 
 def binary_search(list: [], value: int) -> int:
@@ -127,21 +104,6 @@ def binary_search(list: [], value: int) -> int:
             else:
                 right_index = middle_index - 1
     return -1
-
-
-def meta_binary_search(list: [], value: int) -> int:
-    n = len(list)
-    interval_size = int(math.log(n - 1, 2.0)) + 1
-    index = 0
-
-    for i in range(interval_size - 1, -1, -1):
-        if list[index] == value:
-            return index
-        new_index = index | (1 << i)
-
-        if new_index < n and list[new_index] <= value:
-            index = new_index
-    return index if list[index] == value else -1
 
 
 def insertion_sort(list: [], comparator=lambda x, y: x < y) -> []:
@@ -223,7 +185,6 @@ def count_sort(list: []):
 
     for i in range(1, max_element + 1):
         count_list[i] += count_list[i - 1]
-
     sorted_list = [0] * len(list)
 
     for i in range(len(list) - 1, -1, -1):
