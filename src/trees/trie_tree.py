@@ -44,15 +44,15 @@ class TrieTree:
 
         # Collect suffixes recursively
         suffixes = []
-        self._collect_suffixes(current_node, suffixes)
+        self._get_suffixes(current_node, suffixes)
         return [suffix + word[len(prefix):] for word in suffixes]
 
-    def _collect_suffixes(self, node, suffixes):
+    def _get_suffixes(self, node, suffixes):
         if node.is_word:
             suffixes.append(node.word)
 
         for child in node.children.values():
-            self._collect_suffixes(child, suffixes)
+            self._get_suffixes(child, suffixes)
 
 
 if __name__ == '__main__':
