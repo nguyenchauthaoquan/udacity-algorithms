@@ -17,8 +17,6 @@ def rotate_list(list: []) -> []:
 def rotated_array_search(input_list, number):
     rotated_list = rotate_list(input_list)
 
-    print(rotated_list)
-
     return binary_search(list=rotated_list, value=number)
 
 
