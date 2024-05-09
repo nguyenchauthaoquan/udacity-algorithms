@@ -59,6 +59,8 @@ def sort_012(input_list):
 
 
 def find_min_max(input_list):
+    if len(input_list) == 0:
+        return 0, 0
     min_element, max_element = input_list[0], input_list[0]
 
     for i in input_list:

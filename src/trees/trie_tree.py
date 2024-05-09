@@ -50,7 +50,7 @@ class TrieTree:
 
 
 class RouterTrieTree(TrieTree):
-    def __init__(self, *handlers):
+    def __init__(self, handlers):
         super().__init__()
         self.root = RouterTrieNode()
         self.handlers = handlers

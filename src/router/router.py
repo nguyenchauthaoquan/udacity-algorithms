@@ -41,7 +41,6 @@ if __name__ == '__main__':
     router = Router("root handler",
                     "not found handler")  # remove the 'not found handler' if you did not implement this
     router.add_handler("about handler", "/home/about")  # add a route
-
     print("Problem 6:")
     # some lookups with the expected output
     print(router.lookup("/"))  # should print 'root handler'
