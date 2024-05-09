@@ -7,6 +7,10 @@ class TrieTree:
         self.root = TrieNode()
 
     def insert(self, word):
+        """
+        Insert each character into trie tree with the pre-defined word
+        :param word: The pre-defined word
+        """
         current_node = self.root
 
         for i, char in enumerate(word):
