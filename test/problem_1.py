@@ -20,7 +20,6 @@ class MyTestCase(unittest.TestCase):
         [9.0]
     ])
     def test_edge_cases(self, number):
-        print("{0} equals to {1}".format(Math.sqrt(number), math.sqrt(number)))
         self.assertEqual(Math.sqrt(number), math.sqrt(number))
 
     @parameterized.expand([
@@ -30,7 +29,6 @@ class MyTestCase(unittest.TestCase):
         [27.5]
     ])
     def test_floating_point_case(self, number):
-        print( "{0} not equals to {1}".format(Math.sqrt(number), math.sqrt(number)))
         self.assertNotEqual(Math.sqrt(number), math.sqrt(number))
 
     @parameterized.expand([

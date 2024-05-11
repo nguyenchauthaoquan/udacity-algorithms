@@ -360,6 +360,142 @@ class TrieTree:
 
 ### Problem 6: Unsorted Integer Array
 
+In this problem, we will look for smallest and largest integer from a list of unsorted integers. The code should run in O(n) time. Do not use Python's inbuilt functions to find min and max.
+
+I re-used the `find_min_max` in list.py for the solution of this problem:
+
+```python
+def find_min_max(input_list):
+    """
+    Time complexity: O(n)
+    Space complexity: O(1)
+    """
+    if len(input_list) == 0:
+        return 0, 0
+    min_element, max_element = input_list[0], input_list[0]
+
+    for i in input_list: # O(n)
+        if min_element > i:
+            min_element = i
+        if max_element < i:
+            max_element = i
+
+    return min_element, max_element
+```
+
 ### Problem 7: Request Routing in a Web Server with a Trie
+
+We are going to implement an HTTPRouter like you would find in a typical web server using the Trie data structure we learned previously.
+
+There are many different implementations of HTTP Routers such as regular expressions or simple string matching, but the Trie is an excellent and very efficient data structure for this purpose.
+
+The purpose of an HTTP Router is to take a URL path like "/", "/about", or "/blog/2019-01-15/my-awesome-blog-post" and figure out what content to return. In a dynamic web server, the content will often come from a block of code called a handler.
+
+to implement this problem, I implement the trie tree for router, it is the same as regular trie tree below:
+
+```python
+class RouterTrieNode(TrieNode):
+    def __init__(self, path='', handler=None):
+        super().__init__()
+        self.path = path
+        self.handler = handler
+
+class RouterTrieTree(TrieTree):
+    def __init__(self, handlers):
+        super().__init__()
+        self.root = RouterTrieNode()
+        self.handlers = handlers
+
+    def add_handler(self, handler, paths):
+        """
+        Time complexity: O(n)
+        Space complexity: O(n)
+        """
+        current_node = self.root
+
+        for part in paths:
+            if part not in current_node.children:
+                current_node.children[part] = RouterTrieNode(current_node.path + '/' + part)
+            current_node = current_node.children[part]
+
+        if handler in self.handlers:
+            current_node.handler = handler
+        else:
+            self.handlers += (handler,)
+            current_node.handler = handler
+
+    def lookup(self, paths):
+        """
+        Time complexity: O(n)
+        Space complexity: O(n)
+        """
+        current_node = self.root
+
+        if paths == ROOT_URL_STR and ROOT_HANDLER_STR in self.handlers:
+            return ROOT_HANDLER_STR
+
+        if current_node is None and NOT_FOUND_HANDLER_STR in self.handlers:
+            return NOT_FOUND_HANDLER_STR
+
+        for path in paths:
+            if path not in current_node.children:
+                return NOT_FOUND_HANDLER_STR
+            current_node = current_node.children[path]
+
+        return current_node.handler if current_node.handler is not None else NOT_FOUND_HANDLER_STR
+
+
+class Router:
+    def __init__(self, *handlers):
+        self.tree = RouterTrieTree(handlers)
+
+    def add_handler(self, handler, path):
+        """
+        Time complexity: O(n)
+        Space complexity: O(n)
+        """
+        paths = self.split_path(path)
+        self.tree.add_handler(handler, paths)
+
+    def lookup(self, path):
+        """
+        Time complexity: O(n)
+        Space complexity: O(n)
+        """
+        paths = self.split_path(path)
+
+        return self.tree.lookup(paths)
+
+    def split_path(self, path):
+        """
+        Time complexity: O(n)
+        Space complexity: O(1)
+        """
+        if path == ROOT_URL_STR:
+            return path
+
+        return [part for part in path.split(ROOT_URL_STR) if part != EMPTY_STR]
+```
+
+## How to run code
+
+### Installation
+
+1. [Python](https://www.python.org/downloads/)
+2. [Pycharm](https://www.jetbrains.com/pycharm/download/?section=windows)
+3. Packages: parameterized, unittest (make sure either pip or conda is required)
+
+### Running source code
+
+#### Running the sample results
+
+for the sample running, please run main.py in list, math folder,
+but for the trie trees, please run trie_tree.py and router.py to view the sample results
+by right-clicking to the files you want and left-click on Run ... (with "..." is the file name)
+
+#### Running the test case results
+
+each problem I placed in test, named as <problem>.py (for example problem_1.py), to run these file,
+right-click the file in test folder and click Run ..., it will show the test result in the bottom
 
 ## Project 4: Route Planner
